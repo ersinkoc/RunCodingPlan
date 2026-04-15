@@ -281,7 +281,7 @@ describe('interactive-flow model-marker branch', () => {
     const { setKey } = await import('../src/core/keys.js');
     setKey('zai', 'sk-test');
     const callsSelect = vi.spyOn(interactive, 'select');
-    callsSelect.mockResolvedValueOnce('launch:zai').mockResolvedValueOnce('my-model');
+    callsSelect.mockResolvedValueOnce('launch:zai').mockResolvedValueOnce('my-model').mockResolvedValue('exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(false);
     const { getDefaultConfig, addUserModel, saveConfig } = await import('../src/core/config.js');
     const cfg = getDefaultConfig();
@@ -368,7 +368,7 @@ describe('signupUrl fallback (no affiliateUrl)', () => {
   it('interactive-flow prints signupUrl when affiliateUrl is absent', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const calls = vi.spyOn(interactive, 'select');
-    calls.mockResolvedValueOnce('launch:kimi');
+    calls.mockResolvedValueOnce('launch:kimi').mockResolvedValue('exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(false);
     const { getDefaultConfig } = await import('../src/core/config.js');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');

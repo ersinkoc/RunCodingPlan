@@ -36,7 +36,7 @@ describe('runInteractive', () => {
 
   it('add-custom choice invokes addCustomCommand', async () => {
     const interactive = await import('../src/cli/interactive.js');
-    vi.spyOn(interactive, 'select').mockResolvedValue('add-custom');
+    vi.spyOn(interactive, 'select').mockResolvedValueOnce('add-custom').mockResolvedValue('exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('');
     const custom = await import('../src/cli/commands/custom.js');
     const spy = vi.spyOn(custom, 'addCustomCommand').mockResolvedValue();
@@ -53,7 +53,7 @@ describe('runInteractive', () => {
 
   it('update choice runs updateCommand', async () => {
     const interactive = await import('../src/cli/interactive.js');
-    vi.spyOn(interactive, 'select').mockResolvedValue('update');
+    vi.spyOn(interactive, 'select').mockResolvedValueOnce('update').mockResolvedValue('exit');
     const update = await import('../src/cli/commands/update.js');
     const spy = vi.spyOn(update, 'updateCommand').mockResolvedValue();
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
@@ -73,8 +73,8 @@ describe('runInteractive', () => {
     vi.spyOn(interactive, 'select').mockImplementation(async () => {
       selectCalls++;
       if (selectCalls === 1) return 'launch:zai';
-      // select model
-      return 'glm-5.1';
+      if (selectCalls === 2) return 'glm-5.1';
+      return 'exit';
     });
     vi.spyOn(interactive, 'confirm').mockImplementation(async (q: string, d?: boolean) => {
       // 1st: set key? yes
@@ -98,7 +98,7 @@ describe('runInteractive', () => {
 
   it('launch choice with no key and refuse set returns early', async () => {
     const interactive = await import('../src/cli/interactive.js');
-    vi.spyOn(interactive, 'select').mockResolvedValue('launch:zai');
+    vi.spyOn(interactive, 'select').mockResolvedValueOnce('launch:zai').mockResolvedValue('exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(false);
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -114,7 +114,7 @@ describe('runInteractive', () => {
 
   it('launch choice with blank input cancels key setup', async () => {
     const interactive = await import('../src/cli/interactive.js');
-    vi.spyOn(interactive, 'select').mockResolvedValue('launch:zai');
+    vi.spyOn(interactive, 'select').mockResolvedValueOnce('launch:zai').mockResolvedValue('exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValueOnce(true);
     vi.spyOn(interactive, 'input').mockResolvedValue('   ');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
@@ -131,7 +131,7 @@ describe('runInteractive', () => {
 
   it('launch:unknown returns silently', async () => {
     const interactive = await import('../src/cli/interactive.js');
-    vi.spyOn(interactive, 'select').mockResolvedValue('launch:nope');
+    vi.spyOn(interactive, 'select').mockResolvedValueOnce('launch:nope').mockResolvedValue('exit');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
     const cap = captureIO();
@@ -169,7 +169,8 @@ describe('interactiveConfigure (via configure choice)', () => {
     vi.spyOn(interactive, 'select').mockImplementation(async () => {
       t++;
       if (t === 1) return 'configure';
-      return '__back__';
+      if (t === 2) return '__back__';
+      return 'exit';
     });
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -179,7 +180,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('change default model path', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'default', 'glm-5'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
     const cfg = getDefaultConfig();
@@ -195,7 +196,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('change default model on custom provider', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'c', 'default', 'b'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
     const { addCustomProvider } = await import('../src/core/custom.js');
@@ -215,7 +216,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('add-model on built-in (with set-as-default)', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'add-model'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('new-m');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(true);
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
@@ -234,7 +235,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('add-model: blank input returns early', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'add-model'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -251,7 +252,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('add-model on custom provider', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'c', 'add-model'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('newmod');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(false);
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
@@ -273,7 +274,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('remove-model path on user-added', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'remove-model', 'mY'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig, addUserModel } = await import('../src/core/config.js');
     const cfg = getDefaultConfig();
@@ -290,7 +291,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('remove-model: no removable → returns early with info', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'remove-model'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
     const cfg = getDefaultConfig();
@@ -306,7 +307,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('remove-model on custom provider', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'c', 'remove-model', 'b'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
     const { addCustomProvider } = await import('../src/core/custom.js');
@@ -326,7 +327,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('update-key path', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'update-key'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('sk-new');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -343,7 +344,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('update-key: blank returns early', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'update-key'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -355,7 +356,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('remove-key path: confirm yes', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'remove-key'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(true);
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -368,7 +369,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('remove-key path: confirm no returns early', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'zai', 'remove-key'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(false);
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -381,7 +382,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('update-url on custom provider', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'c', 'update-url'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('https://new');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -397,7 +398,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('update-url blank returns early', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'c', 'update-url'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'input').mockResolvedValue('');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -413,7 +414,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('delete custom provider: confirm yes', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'c', 'delete'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(true);
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -429,7 +430,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('delete custom provider: confirm no keeps provider', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'c', 'delete'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(false);
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
@@ -445,7 +446,7 @@ describe('interactiveConfigure (via configure choice)', () => {
   it('interactiveConfigure: unknown provider selected returns', async () => {
     const interactive = await import('../src/cli/interactive.js');
     const picks = ['configure', 'ghost'];
-    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? '');
+    vi.spyOn(interactive, 'select').mockImplementation(async () => picks.shift() ?? 'exit');
     const { runInteractive } = await import('../src/cli/commands/interactive-flow.js');
     const { getDefaultConfig } = await import('../src/core/config.js');
     await runInteractive(baseArgs(), getDefaultConfig());
