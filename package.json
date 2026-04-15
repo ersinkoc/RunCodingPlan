@@ -40,7 +40,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
+    "dev": "tsup && node dist/index.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

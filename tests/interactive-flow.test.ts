@@ -31,7 +31,7 @@ describe('runInteractive', () => {
     } finally {
       cap.restore();
     }
-    expect(cap.out.join('\n')).toContain('Hangi');
+    expect(cap.out.join('\n')).toContain('Run Claude Code');
   });
 
   it('add-custom choice invokes addCustomCommand', async () => {

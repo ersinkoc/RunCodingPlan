@@ -1,6 +1,6 @@
 # RunCodingPlan
 
-> **"Hangi Claude Code?"** — Switch Claude Code between alternative AI providers in one command.
+> **"Run Claude Code with any plan."** — Switch Claude Code between alternative AI providers in one command.
 
 ```
   ╦═╗╦ ╦╔╗╔╔═╗╔═╗╔╦╗╦╔╗╔╔═╗╔═╗╦  ╔═╗╔╗╔

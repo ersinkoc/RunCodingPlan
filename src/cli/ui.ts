@@ -37,15 +37,15 @@ export function visibleLength(s: string): number {
 
 export function banner(version: string): string {
   const art = [
-    '  ╦ ╦╦ ╦╦╔═╗╦ ╦╔═╗╔═╗',
-    '  ║║║╠═╣║║  ╠═╣║  ║',
-    '  ╚╩╝╩ ╩╩╚═╝╩ ╩╚═╝╚═╝',
+    '  ╦═╗╦ ╦╔╗╔╔═╗╔═╗╔╦╗╦╔╗╔╔═╗╔═╗╦  ╔═╗╔╗╔',
+    '  ╠╦╝║ ║║║║║  ║ ║ ║║║║║║║ ╦╠═╝║  ╠═╣║║║',
+    '  ╩╚═╚═╝╝╚╝╚═╝╚═╝═╩╝╩╝╚╝╚═╝╩  ╩═╝╩ ╩╝╚╝',
   ];
   const lines: string[] = [];
   for (const line of art) lines.push(c.magenta(line));
   lines[lines.length - 1] += '  ' + c.gray(`v${version}`);
   lines.push('');
-  lines.push(c.dim('  Hangi Claude Code?'));
+  lines.push(c.dim('  Run Claude Code with any plan.'));
   lines.push('');
   return lines.join('\n');
 }
