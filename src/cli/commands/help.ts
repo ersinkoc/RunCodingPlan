@@ -3,11 +3,11 @@ import { c } from '../ui.js';
 
 export function printHelp(): void {
   const help = `
-  ${c.bold('whichcc')} ${c.gray(`v${VERSION}`)} — Switch Claude Code between alternative AI providers
+  ${c.bold('whichclaude')} ${c.gray(`v${VERSION}`)} — Switch Claude Code between alternative AI providers
 
   ${c.bold('USAGE')}
-    npx whichcc                           ${c.dim('# interactive menu')}
-    npx whichcc -p <provider> [flags]     ${c.dim('# launch directly')}
+    npx whichclaude                           ${c.dim('# interactive menu')}
+    npx whichclaude -p <provider> [flags]     ${c.dim('# launch directly')}
 
   ${c.bold('PROVIDERS')} (built-in)
     zai       ZAI (Zhipu AI)       https://z.ai/subscribe
@@ -43,7 +43,7 @@ export function printHelp(): void {
   ${c.bold('SESSION TEMPLATE')}
     --show-template            Print session template (path + current content)
     --reset-template           Overwrite template with built-in default
-    ${c.dim('Customize: edit ~/.claude/.whichcc/template.json')}
+    ${c.dim('Customize: edit ~/.claude/.whichclaude/template.json')}
     ${c.dim('Placeholders: [[PROVIDER_URL]] [[APIKEY]] [[MODEL]] [[STATUSLINE_COMMAND]]')}
 
   ${c.bold('OTHER')}
@@ -54,23 +54,23 @@ export function printHelp(): void {
 
   ${c.bold('EXAMPLES')}
     ${c.dim('# Set key then launch')}
-    npx whichcc -p zai -a sk-xxx
-    npx whichcc -p zai
+    npx whichclaude -p zai -a sk-xxx
+    npx whichclaude -p zai
 
     ${c.dim('# Specific model')}
-    npx whichcc -p alibaba -m qwen3-coder-plus -sd
+    npx whichclaude -p alibaba -m qwen3-coder-plus -sd
 
     ${c.dim('# Add custom provider via flags')}
-    npx whichcc --add-custom --name DeepSeek --url https://api.deepseek.com/anthropic -a sk-xx -m deepseek-r3
+    npx whichclaude --add-custom --name DeepSeek --url https://api.deepseek.com/anthropic -a sk-xx -m deepseek-r3
 
     ${c.dim('# User-added model on built-in provider')}
-    npx whichcc -p zai --add-model glm-6 --set-default
+    npx whichclaude -p zai --add-model glm-6 --set-default
 
     ${c.dim('# Sync with GitHub registry')}
-    npx whichcc -u
+    npx whichclaude -u
 
   ${c.bold('MORE')}
-    https://github.com/ersinkoc/whichcc
+    https://github.com/ersinkoc/whichclaude
 
   ${c.bold('ALSO BY @ersinkoc')}
     ${c.cyan('project-architect')}  Documentation-first project planning agent skill

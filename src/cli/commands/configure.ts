@@ -32,7 +32,7 @@ export function addModelCommand(args: ParsedArgs, config: WhichCCConfig): void {
   saveConfig(config);
   success(`Model "${args.addModel}" added to ${provider.name}`);
   info('This is a user-added model. It will be marked with (*)');
-  info('Run `npx whichcc -u` to sync with official registry');
+  info('Run `npx whichclaude -u` to sync with official registry');
   if (args.setDefault) success(`Default model: ${args.addModel}`);
 }
 

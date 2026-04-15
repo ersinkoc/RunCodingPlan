@@ -11,7 +11,7 @@ describe('printHelp', () => {
       cap.restore();
     }
     const combined = cap.out.join('\n');
-    expect(combined).toContain('whichcc');
+    expect(combined).toContain('whichclaude');
     expect(combined).toContain('USAGE');
     expect(combined).toContain('PROVIDERS');
     expect(combined).toContain('EXAMPLES');

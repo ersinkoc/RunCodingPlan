@@ -20,59 +20,66 @@ export async function runInteractive(
   config: WhichCCConfig,
 ): Promise<void> {
   console.log(banner(VERSION));
-  console.log(renderProviderBox(config));
-  console.log('');
 
-  const all = resolveAllProviders(config);
-  const builtin = all.filter((p) => !p.isCustom);
-  const custom = all.filter((p) => p.isCustom);
+  while (true) {
+    console.log(renderProviderBox(config));
+    console.log('');
 
-  const options = [];
-  for (const p of builtin) {
-    const keyTag = hasKey(p.id) ? '' : ' ⚠ No API key';
-    options.push({
-      label: `${p.name} — ${p.defaultModel}${keyTag}`,
-      value: `launch:${p.id}`,
-    });
-  }
-  if (custom.length > 0) {
-    options.push({ label: '─── Custom ───', value: '', separator: true });
-    for (const p of custom) {
+    const all = resolveAllProviders(config);
+    const builtin = all.filter((p) => !p.isCustom);
+    const custom = all.filter((p) => p.isCustom);
+
+    const options = [];
+    for (const p of builtin) {
       const keyTag = hasKey(p.id) ? '' : ' ⚠ No API key';
       options.push({
         label: `${p.name} — ${p.defaultModel}${keyTag}`,
         value: `launch:${p.id}`,
       });
     }
-  }
-  options.push({ label: '─────────────', value: '', separator: true });
-  options.push({ label: 'Add custom provider', value: 'add-custom' });
-  options.push({ label: 'Configure a provider', value: 'configure' });
-  options.push({ label: 'Update model list', value: 'update' });
-  options.push({ label: 'Exit', value: 'exit' });
+    if (custom.length > 0) {
+      options.push({ label: '─── Custom ───', value: '', separator: true });
+      for (const p of custom) {
+        const keyTag = hasKey(p.id) ? '' : ' ⚠ No API key';
+        options.push({
+          label: `${p.name} — ${p.defaultModel}${keyTag}`,
+          value: `launch:${p.id}`,
+        });
+      }
+    }
+    options.push({ label: '─────────────', value: '', separator: true });
+    options.push({ label: 'Add custom provider', value: 'add-custom' });
+    options.push({ label: 'Configure a provider', value: 'configure' });
+    options.push({ label: 'Update model list', value: 'update' });
+    options.push({ label: 'Exit', value: 'exit' });
 
-  const choice = await select('Select provider:', options);
+    const choice = await select('Select provider:', options);
 
-  if (choice === 'exit') {
-    console.log(footerPlug());
-    return;
-  }
-  if (choice === 'add-custom') {
-    await addCustomCommand(args, config);
-    return;
-  }
-  if (choice === 'update') {
-    await updateCommand(config);
-    return;
-  }
-  if (choice === 'configure') {
-    await interactiveConfigure(config);
-    return;
-  }
-  if (choice.startsWith('launch:')) {
-    const providerId = choice.slice('launch:'.length);
-    await interactiveLaunch(args, config, providerId);
-    return;
+    if (choice === 'exit') {
+      console.log(footerPlug());
+      return;
+    }
+    if (choice === 'add-custom') {
+      await addCustomCommand(args, config);
+      console.log('');
+      continue;
+    }
+    if (choice === 'update') {
+      await updateCommand(config);
+      console.log('');
+      continue;
+    }
+    if (choice === 'configure') {
+      await interactiveConfigure(config);
+      console.log('');
+      continue;
+    }
+    if (choice.startsWith('launch:')) {
+      const providerId = choice.slice('launch:'.length);
+      await interactiveLaunch(args, config, providerId);
+      console.log('');
+      continue;
+    }
   }
 }
 

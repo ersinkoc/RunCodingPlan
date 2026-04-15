@@ -30,8 +30,8 @@ describe('session file I/O', () => {
   it('cleanOldSessions removes stale session files', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    const oldPath = join(CLAUDE_DIR, 'whichcc-zai-123.json');
-    const freshPath = join(CLAUDE_DIR, 'whichcc-kimi-456.json');
+    const oldPath = join(CLAUDE_DIR, 'whichclaude-zai-123.json');
+    const freshPath = join(CLAUDE_DIR, 'whichclaude-kimi-456.json');
     writeFileSync(oldPath, '{}');
     writeFileSync(freshPath, '{}');
     const past = (Date.now() - 48 * 60 * 60 * 1000) / 1000;
@@ -51,13 +51,13 @@ describe('session file I/O', () => {
   it('listSessionFiles filters by prefix and suffix', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    writeFileSync(join(CLAUDE_DIR, 'whichcc-x-1.json'), '{}');
+    writeFileSync(join(CLAUDE_DIR, 'whichclaude-x-1.json'), '{}');
     writeFileSync(join(CLAUDE_DIR, 'settings.json'), '{}');
-    writeFileSync(join(CLAUDE_DIR, 'whichcc-x-2.txt'), 'nope');
+    writeFileSync(join(CLAUDE_DIR, 'whichclaude-x-2.txt'), 'nope');
     const { listSessionFiles } = await import('../src/core/session.js');
     const files = listSessionFiles();
     expect(files.length).toBe(1);
-    expect(files[0]?.endsWith('whichcc-x-1.json')).toBe(true);
+    expect(files[0]?.endsWith('whichclaude-x-1.json')).toBe(true);
   });
 
   it('listSessionFiles returns [] when dir missing', async () => {
@@ -68,7 +68,7 @@ describe('session file I/O', () => {
   it('cleanOldSessions ignores non-stale sessions', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    const freshPath = join(CLAUDE_DIR, 'whichcc-a-1.json');
+    const freshPath = join(CLAUDE_DIR, 'whichclaude-a-1.json');
     writeFileSync(freshPath, '{}');
     const { cleanOldSessions } = await import('../src/core/session.js');
     expect(cleanOldSessions()).toEqual([]);
@@ -77,7 +77,7 @@ describe('session file I/O', () => {
   it('removeSessionFile deletes existing file and returns true', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    const p = join(CLAUDE_DIR, 'whichcc-test-999.json');
+    const p = join(CLAUDE_DIR, 'whichclaude-test-999.json');
     writeFileSync(p, '{}');
     const { removeSessionFile } = await import('../src/core/session.js');
     expect(removeSessionFile(p)).toBe(true);
@@ -86,7 +86,7 @@ describe('session file I/O', () => {
 
   it('removeSessionFile returns false when file missing', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
-    const p = join(CLAUDE_DIR, 'whichcc-missing.json');
+    const p = join(CLAUDE_DIR, 'whichclaude-missing.json');
     const { removeSessionFile } = await import('../src/core/session.js');
     expect(removeSessionFile(p)).toBe(false);
   });
@@ -94,7 +94,7 @@ describe('session file I/O', () => {
   it('removeSessionFile swallows unlink errors', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    const p = join(CLAUDE_DIR, 'whichcc-err.json');
+    const p = join(CLAUDE_DIR, 'whichclaude-err.json');
     writeFileSync(p, '{}');
     vi.resetModules();
     vi.doMock('node:fs', async () => {

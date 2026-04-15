@@ -26,7 +26,7 @@ describe('clean.ts unlink failure tolerated', () => {
     const realFs = await vi.importActual<typeof import('node:fs')>('node:fs');
     realFs.mkdirSync(WHICHCC_DIR, { recursive: true });
     realFs.mkdirSync(CLAUDE_DIR, { recursive: true });
-    realFs.writeFileSync(`${CLAUDE_DIR}/whichcc-sess-test.json`, '{}');
+    realFs.writeFileSync(`${CLAUDE_DIR}/whichclaude-sess-test.json`, '{}');
 
     vi.doMock('node:fs', async () => {
       const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
@@ -160,7 +160,7 @@ describe('session.ts error tolerance', () => {
     const realFs = await vi.importActual<typeof import('node:fs')>('node:fs');
     realFs.mkdirSync(WHICHCC_DIR, { recursive: true });
     realFs.mkdirSync(CLAUDE_DIR, { recursive: true });
-    realFs.writeFileSync(`${CLAUDE_DIR}/whichcc-sess-a.json`, '{}');
+    realFs.writeFileSync(`${CLAUDE_DIR}/whichclaude-sess-a.json`, '{}');
     vi.doMock('node:fs', async () => {
       const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
       return { ...actual, statSync: () => { throw new Error('stat fail'); } };
@@ -398,7 +398,7 @@ describe('ui.ts maskKey empty', () => {
 
 describe('index.ts signal handlers', () => {
   it('SIGINT handler triggers exit(130)', async () => {
-    process.argv = ['node', 'whichcc', '--help'];
+    process.argv = ['node', 'whichclaude', '--help'];
     vi.resetModules();
     const codes: number[] = [];
     const exitSpy = vi.spyOn(process, 'exit').mockImplementation(((c?: number) => {
@@ -420,7 +420,7 @@ describe('index.ts signal handlers', () => {
   });
 
   it('SIGTERM handler triggers exit(143)', async () => {
-    process.argv = ['node', 'whichcc', '--help'];
+    process.argv = ['node', 'whichclaude', '--help'];
     vi.resetModules();
     const codes: number[] = [];
     const exitSpy = vi.spyOn(process, 'exit').mockImplementation(((c?: number) => {
@@ -445,7 +445,7 @@ describe('index.ts signal handlers', () => {
     vi.doMock('../src/cli/commands/interactive-flow.js', () => ({
       runInteractive: async () => { throw 'string-error'; },
     }));
-    process.argv = ['node', 'whichcc'];
+    process.argv = ['node', 'whichclaude'];
     vi.resetModules();
     const codes: number[] = [];
     const exitSpy = vi.spyOn(process, 'exit').mockImplementation(((c?: number) => {

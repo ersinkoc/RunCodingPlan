@@ -60,7 +60,7 @@ describe('loadConfig / saveConfig', () => {
     expect(cfg2.defaults.statusLine).toBe(false);
   });
 
-  it('ensureDirs creates the .whichcc dir', async () => {
+  it('ensureDirs creates the .whichclaude dir', async () => {
     const { WHICHCC_DIR } = await import('../src/constants.js');
     const { ensureDirs } = await import('../src/core/config.js');
     ensureDirs();
@@ -121,7 +121,7 @@ describe('loadConfig / saveConfig', () => {
 
   it('saveConfig creates missing parent dir', async () => {
     const { CONFIG_PATH, WHICHCC_DIR } = await import('../src/constants.js');
-    // delete .whichcc
+    // delete .whichclaude
     const { rmSync } = await import('node:fs');
     if (existsSync(WHICHCC_DIR)) rmSync(WHICHCC_DIR, { recursive: true, force: true });
     const { saveConfig, getDefaultConfig } = await import('../src/core/config.js');
@@ -129,7 +129,7 @@ describe('loadConfig / saveConfig', () => {
     expect(existsSync(CONFIG_PATH)).toBe(true);
   });
 
-  it('uses WHICHCC_HOME_DIR override', async () => {
+  it('uses WHICHCLAUDE_HOME_DIR override', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     expect(CLAUDE_DIR).toBe(join(tmp.root, '.claude'));
   });

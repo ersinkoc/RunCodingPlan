@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 async function runMain(args: string[]): Promise<void> {
-  process.argv = ['node', 'whichcc', ...args];
+  process.argv = ['node', 'whichclaude', ...args];
   vi.resetModules();
   await import('../src/index.js');
   // wait for main() promise to settle
@@ -44,7 +44,7 @@ describe('index main()', () => {
     } finally {
       cap.restore();
     }
-    expect(cap.out.join('\n')).toMatch(/USAGE|whichcc/i);
+    expect(cap.out.join('\n')).toMatch(/USAGE|whichclaude/i);
   });
 
   it('--version prints version', async () => {

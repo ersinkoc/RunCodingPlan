@@ -11,7 +11,7 @@ export interface LaunchOptions {
 }
 
 export function resolveClaudeBinary(): string {
-  const override = process.env['WHICHCC_CLAUDE_BIN'];
+  const override = process.env['WHICHCLAUDE_CLAUDE_BIN'];
   if (override && existsSync(override)) return override;
 
   const isWindows = platform() === 'win32';
@@ -82,7 +82,7 @@ export function launchClaudeCode(options: LaunchOptions): void {
         `\n  ${ANSI.red}✗${ANSI.reset} Claude Code not found.\n` +
           `    Searched PATH and common install locations.\n` +
           `    Install: https://docs.anthropic.com/en/docs/claude-code\n` +
-          `    Or set WHICHCC_CLAUDE_BIN to the claude binary path.\n`,
+          `    Or set WHICHCLAUDE_CLAUDE_BIN to the claude binary path.\n`,
       );
     } else {
       console.error(`\n  ${ANSI.red}✗${ANSI.reset} Failed to launch: ${err.message}\n`);

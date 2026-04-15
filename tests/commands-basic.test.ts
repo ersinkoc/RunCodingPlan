@@ -110,7 +110,7 @@ describe('statusCommand', () => {
       cap.restore();
     }
     const out = cap.out.join('\n');
-    expect(out).toContain('WhichCC Status');
+    expect(out).toContain('WhichClaude Status');
     expect(out).toContain('Last used:');
     expect(out).toContain('Session files:');
     expect(out).toContain('more');
@@ -145,7 +145,7 @@ describe('cleanCommand', () => {
   it('removes stale session files (default mode)', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    const stale = join(CLAUDE_DIR, 'whichcc-x-1.json');
+    const stale = join(CLAUDE_DIR, 'whichclaude-x-1.json');
     writeFileSync(stale, '{}');
     const past = (Date.now() - 48 * 60 * 60 * 1000) / 1000;
     utimesSync(stale, past, past);
@@ -173,7 +173,7 @@ describe('cleanCommand', () => {
   it('all=true: confirm=no → cancels', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    writeFileSync(join(CLAUDE_DIR, 'whichcc-a-1.json'), '{}');
+    writeFileSync(join(CLAUDE_DIR, 'whichclaude-a-1.json'), '{}');
     const interactive = await import('../src/cli/interactive.js');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(false);
     const { cleanCommand } = await import('../src/cli/commands/clean.js');
@@ -190,7 +190,7 @@ describe('cleanCommand', () => {
   it('all=true: confirm=yes → removes files', async () => {
     const { CLAUDE_DIR } = await import('../src/constants.js');
     mkdirSync(CLAUDE_DIR, { recursive: true });
-    const f = join(CLAUDE_DIR, 'whichcc-b-1.json');
+    const f = join(CLAUDE_DIR, 'whichclaude-b-1.json');
     writeFileSync(f, '{}');
     const interactive = await import('../src/cli/interactive.js');
     vi.spyOn(interactive, 'confirm').mockResolvedValue(true);

@@ -59,7 +59,7 @@ export const BUILTIN_PROVIDERS: Record<string, BuiltinProvider> = {
   },
   alibaba: {
     id: 'alibaba',
-    name: 'Alibaba (DashScope Coding Plan)',
+    name: 'Alibaba ',
     baseUrl: 'https://coding-intl.dashscope.aliyuncs.com/apps/anthropic',
     signupUrl: 'https://www.alibabacloud.com/en/campaign/ai-scene-coding',
     defaultModel: 'qwen3.6-plus',

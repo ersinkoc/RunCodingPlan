@@ -27,7 +27,7 @@ export function showTemplateCommand(): void {
   console.log(raw);
   console.log('');
   info(`Edit: open the file at ${TEMPLATE_PATH}`);
-  info('Reset: npx whichcc --reset-template');
+  info('Reset: npx whichclaude --reset-template');
 }
 
 export function resetTemplateCommand(): void {

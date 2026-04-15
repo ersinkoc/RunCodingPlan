@@ -40,7 +40,7 @@ async function main(): Promise<void> {
   } catch (e) {
     if (e instanceof ParseError) {
       error(e.message);
-      console.log('\n  Run `npx whichcc --help` for usage.');
+      console.log('\n  Run `npx whichclaude --help` for usage.');
       process.exit(1);
     }
     throw e;

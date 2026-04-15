@@ -8,7 +8,7 @@ import { existsSync } from 'node:fs';
 
 export function statusCommand(config: WhichCCConfig): void {
   console.log('');
-  console.log('  ' + c.bold('WhichCC Status'));
+  console.log('  ' + c.bold('WhichClaude Status'));
   console.log('');
   console.log(`  ${c.dim('Config:')}   ${CONFIG_PATH}`);
   console.log(`  ${c.dim('Keys:')}     ${KEYS_PATH}`);

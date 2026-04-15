@@ -29,7 +29,7 @@ export function launchCommand(args: ParsedArgs, config: WhichCCConfig): void {
     } else if (provider.signupUrl) {
       info(`Get a key: ${c.underline(provider.signupUrl)}`);
     }
-    info(`Set it: npx whichcc -p ${provider.id} -a <your-key>`);
+    info(`Set it: npx whichclaude -p ${provider.id} -a <your-key>`);
     process.exit(1);
   }
 

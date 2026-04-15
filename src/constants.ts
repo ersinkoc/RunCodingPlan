@@ -3,19 +3,19 @@ import { homedir } from 'node:os';
 
 export const VERSION = '1.0.0';
 
-const HOME_OVERRIDE = process.env['WHICHCC_HOME_DIR'];
+const HOME_OVERRIDE = process.env['WHICHCLAUDE_HOME_DIR'];
 export const CLAUDE_DIR = HOME_OVERRIDE
   ? join(HOME_OVERRIDE, '.claude')
   : join(homedir(), '.claude');
-export const WHICHCC_DIR = join(CLAUDE_DIR, '.whichcc');
+export const WHICHCC_DIR = join(CLAUDE_DIR, '.whichclaude');
 export const CONFIG_PATH = join(WHICHCC_DIR, 'config.json');
 export const KEYS_PATH = join(WHICHCC_DIR, 'keys.json');
 export const REGISTRY_CACHE_PATH = join(WHICHCC_DIR, 'registry.json');
 export const TEMPLATE_PATH = join(WHICHCC_DIR, 'template.json');
-export const SESSION_PREFIX = 'whichcc-';
+export const SESSION_PREFIX = 'whichclaude-';
 
 export const REGISTRY_URL =
-  'https://raw.githubusercontent.com/ersinkoc/whichcc/main/registry/models.json';
+  'https://raw.githubusercontent.com/ersinkoc/whichclaude/main/registry/models.json';
 
 export const RESERVED_PROVIDER_IDS = ['zai', 'kimi', 'minimax', 'alibaba'] as const;
 export type ReservedProviderId = (typeof RESERVED_PROVIDER_IDS)[number];
@@ -25,7 +25,7 @@ export const DEFAULT_TIMEOUT_MS = '3000000';
 export const SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 export const ENCRYPTION_PREFIX = 'enc:v1:aes256gcm:';
-export const ENCRYPTION_SALT = 'whichcc-salt';
+export const ENCRYPTION_SALT = 'whichclaude-salt';
 export const PBKDF2_ITERATIONS = 100_000;
 
 export const ANSI = {

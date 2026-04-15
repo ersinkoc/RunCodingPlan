@@ -1,5 +1,5 @@
 {
-  "name": "whichcc",
+  "name": "whichclaude",
   "version": "1.0.0",
   "description": "Switch Claude Code between alternative AI providers — ZAI, Kimi, MiniMax, Alibaba & custom",
   "keywords": [
@@ -18,15 +18,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ersinkoc/whichcc.git"
+    "url": "https://github.com/ersinkoc/whichclaude.git"
   },
-  "homepage": "https://github.com/ersinkoc/whichcc#readme",
+  "homepage": "https://github.com/ersinkoc/whichclaude#readme",
   "bugs": {
-    "url": "https://github.com/ersinkoc/whichcc/issues"
+    "url": "https://github.com/ersinkoc/whichclaude/issues"
   },
   "type": "module",
   "bin": {
-    "whichcc": "./dist/index.js"
+    "whichclaude": "./dist/index.js"
   },
   "main": "./dist/index.js",
   "files": [
