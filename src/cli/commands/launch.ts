@@ -24,7 +24,9 @@ export function launchCommand(args: ParsedArgs, config: WhichCCConfig): void {
 
   if (!hasKey(provider.id)) {
     error(`No API key set for ${provider.name}.`);
-    if (provider.signupUrl) {
+    if (provider.affiliateUrl) {
+      info(`Discount signup (affiliate): ${c.underline(provider.affiliateUrl)}`);
+    } else if (provider.signupUrl) {
       info(`Get a key: ${c.underline(provider.signupUrl)}`);
     }
     info(`Set it: npx whichcc -p ${provider.id} -a <your-key>`);

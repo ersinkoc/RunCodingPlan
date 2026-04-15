@@ -61,6 +61,7 @@ export async function select(question: string, options: SelectOption[]): Promise
     const cleanup = () => {
       stdin.removeListener('data', onData);
       if (rawModeSet && stdin.isTTY) {
+        /* c8 ignore next 5 -- setRawMode(false) rarely throws in practice */
         try {
           stdin.setRawMode(false);
         } catch {
@@ -81,11 +82,13 @@ export async function select(question: string, options: SelectOption[]): Promise
       if (key === '\r' || key === '\n') {
         cleanup();
         const chosenIndex = selectable[cursor];
+        /* c8 ignore next 4 -- defensive guard; selectable is bounds-clamped */
         if (chosenIndex === undefined) {
           reject(new Error('Nothing selected'));
           return;
         }
         const chosen = options[chosenIndex];
+        /* c8 ignore next 4 -- defensive guard; options[selectable[i]] is always defined */
         if (!chosen) {
           reject(new Error('Invalid selection'));
           return;
@@ -151,6 +154,7 @@ export async function input(
     const cleanup = () => {
       stdin.removeListener('data', onData);
       if (rawModeSet && stdin.isTTY) {
+        /* c8 ignore next 5 -- setRawMode(false) rarely throws in practice */
         try {
           stdin.setRawMode(false);
         } catch {

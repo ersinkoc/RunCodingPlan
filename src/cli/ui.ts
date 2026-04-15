@@ -24,6 +24,7 @@ export function visibleLength(s: string): number {
   const stripped = s.replace(ANSI_REGEX, '');
   let length = 0;
   for (const ch of stripped) {
+    /* c8 ignore next -- codePointAt(0) returns defined for any iterated char */
     const code = ch.codePointAt(0) ?? 0;
     if (code >= 0x1f000 || code === 0x2705 || code === 0x26a0 || code === 0x1f511) {
       length += 2;
@@ -47,6 +48,18 @@ export function banner(version: string): string {
   lines.push(c.dim('  Hangi Claude Code?'));
   lines.push('');
   return lines.join('\n');
+}
+
+export function footerPlug(): string {
+  return [
+    '',
+    c.dim('  ── Also by @ersinkoc ───────────────────────────────────────────────'),
+    c.dim('  • ') + c.cyan('project-architect') + c.dim(' — docs-first planning → single-shot agent prompt'),
+    c.dim('    https://github.com/ersinkoc/project-architect'),
+    c.dim('  • ') + c.cyan('security-check   ') + c.dim(' — your AI becomes a security team, zero tools'),
+    c.dim('    npx skills add ersinkoc/security-check'),
+    '',
+  ].join('\n');
 }
 
 export function box(title: string, rows: string[], width = 48): string {
@@ -76,6 +89,7 @@ export function sectionBox(
   const lines: string[] = [];
   for (let i = 0; i < sections.length; i++) {
     const section = sections[i];
+    /* c8 ignore next -- defensive guard; for-loop bounds prevent undefined */
     if (!section) continue;
     const header = ` ${section.title} `;
     const headerPad = Math.max(0, width - 2 - header.length);

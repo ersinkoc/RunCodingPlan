@@ -8,7 +8,7 @@ import {
   removeModelFromCustomProvider,
   updateCustomProvider,
 } from '../../core/custom.js';
-import { banner, sectionBox, c, success, info } from '../ui.js';
+import { banner, sectionBox, footerPlug, c, success, info } from '../ui.js';
 import { select, input, confirm } from '../interactive.js';
 import { launchCommand } from './launch.js';
 import { addCustomCommand } from './custom.js';
@@ -53,7 +53,10 @@ export async function runInteractive(
 
   const choice = await select('Select provider:', options);
 
-  if (choice === 'exit') return;
+  if (choice === 'exit') {
+    console.log(footerPlug());
+    return;
+  }
   if (choice === 'add-custom') {
     await addCustomCommand(args, config);
     return;
@@ -82,10 +85,8 @@ function renderProviderBox(config: WhichCCConfig): string {
   for (const p of builtin) {
     const icon = hasKey(p.id) ? c.green('✓') : c.yellow('⚠');
     const key = hasKey(p.id) ? c.green('[API ✓]') : c.yellow('[No Key]');
-    builtinRows.push(`${icon} ${p.name.padEnd(22)} → ${p.defaultModel.padEnd(16)} ${key}`);
-    if (!hasKey(p.id) && p.signupUrl) {
-      builtinRows.push(c.dim(`  🔑 Get key → ${p.signupUrl}`));
-    }
+    const promo = !hasKey(p.id) && p.affiliateUrl ? ' ' + c.magenta('🎁 discount') : '';
+    builtinRows.push(`${icon} ${p.name.padEnd(22)} → ${p.defaultModel.padEnd(16)} ${key}${promo}`);
   }
   if (builtinRows.length === 0) builtinRows.push(c.dim('(no built-in providers)'));
 
@@ -113,7 +114,9 @@ async function interactiveLaunch(
 
   if (!hasKey(provider.id)) {
     info(`No API key set for ${provider.name}.`);
-    if (provider.signupUrl) {
+    if (provider.affiliateUrl) {
+      info(`Discount signup (affiliate): ${c.underline(provider.affiliateUrl)}`);
+    } else if (provider.signupUrl) {
       info(`Get a key: ${c.underline(provider.signupUrl)}`);
     }
     const set = await confirm('Set API key now?', true);

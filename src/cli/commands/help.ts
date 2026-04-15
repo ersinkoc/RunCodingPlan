@@ -10,10 +10,10 @@ export function printHelp(): void {
     npx whichcc -p <provider> [flags]     ${c.dim('# launch directly')}
 
   ${c.bold('PROVIDERS')} (built-in)
-    zai       ZAI (Zhipu AI)       https://z.ai/pricing
-    kimi      Kimi (Moonshot AI)   https://kimi.com/coding
-    minimax   MiniMax              https://www.minimax.io/platform
-    alibaba   Alibaba DashScope    https://bailian.console.alibabacloud.com/
+    zai       ZAI (Zhipu AI)       https://z.ai/subscribe
+    kimi      Kimi (Moonshot AI)   https://kimi.com/code
+    minimax   MiniMax              https://platform.minimax.io/subscribe/token-plan
+    alibaba   Alibaba DashScope    https://www.alibabacloud.com/en/campaign/ai-scene-coding
 
   ${c.bold('COMMON FLAGS')}
     -p, --provider <id>        Provider (zai | kimi | minimax | alibaba | custom)
@@ -40,6 +40,12 @@ export function printHelp(): void {
     --remove-model <model>     Remove user-added model (use with -p)
     --set-default              Make added model the default
 
+  ${c.bold('SESSION TEMPLATE')}
+    --show-template            Print session template (path + current content)
+    --reset-template           Overwrite template with built-in default
+    ${c.dim('Customize: edit ~/.claude/.whichcc/template.json')}
+    ${c.dim('Placeholders: [[PROVIDER_URL]] [[APIKEY]] [[MODEL]] [[STATUSLINE_COMMAND]]')}
+
   ${c.bold('OTHER')}
     --no-launch                Generate session file but don't launch Claude
     --dry-run                  Print session JSON to stdout, don't write
@@ -65,6 +71,12 @@ export function printHelp(): void {
 
   ${c.bold('MORE')}
     https://github.com/ersinkoc/whichcc
+
+  ${c.bold('ALSO BY @ersinkoc')}
+    ${c.cyan('project-architect')}  Documentation-first project planning agent skill
+                      ${c.dim('https://github.com/ersinkoc/project-architect')}
+    ${c.cyan('security-check   ')}  AI security team for every language & layer
+                      ${c.dim('npx skills add ersinkoc/security-check')}
 `;
   console.log(help);
 }

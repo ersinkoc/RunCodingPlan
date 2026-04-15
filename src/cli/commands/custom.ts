@@ -71,6 +71,7 @@ export async function addCustomCommand(
     if (!more) break;
   } while (true);
 
+  /* c8 ignore next -- loop guarantees at least one model */
   let defaultModel = models[0] ?? '';
   if (models.length > 1) {
     defaultModel = await select(

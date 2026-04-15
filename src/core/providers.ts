@@ -20,6 +20,7 @@ export function resolveProvider(
       name: builtin.name,
       baseUrl: builtin.baseUrl,
       signupUrl: builtin.signupUrl,
+      affiliateUrl: builtin.affiliateUrl,
       defaultModel,
       models: mergedModels,
       userModels: [...userModels],

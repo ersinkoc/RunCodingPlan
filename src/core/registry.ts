@@ -7,7 +7,8 @@ export const BUILTIN_PROVIDERS: Record<string, BuiltinProvider> = {
     id: 'zai',
     name: 'ZAI (Zhipu AI)',
     baseUrl: 'https://api.z.ai/api/anthropic',
-    signupUrl: 'https://z.ai/pricing',
+    signupUrl: 'https://z.ai/subscribe',
+    affiliateUrl: 'https://bit.ly/4tJ4GLP',
     defaultModel: 'glm-5.1',
     models: [
       { id: 'glm-5.1', name: 'GLM 5.1', capabilities: ['text', 'deep-thinking'], isDefault: true },
@@ -19,7 +20,7 @@ export const BUILTIN_PROVIDERS: Record<string, BuiltinProvider> = {
     id: 'kimi',
     name: 'Kimi (Moonshot AI)',
     baseUrl: 'https://api.kimi.com/coding/',
-    signupUrl: 'https://kimi.com/coding',
+    signupUrl: 'https://kimi.com/code',
     defaultModel: 'kimi-k2.6-code-preview',
     models: [
       {
@@ -39,7 +40,8 @@ export const BUILTIN_PROVIDERS: Record<string, BuiltinProvider> = {
     id: 'minimax',
     name: 'MiniMax',
     baseUrl: 'https://api.minimax.io/anthropic',
-    signupUrl: 'https://www.minimax.io/platform',
+    signupUrl: 'https://platform.minimax.io/subscribe/token-plan',
+    affiliateUrl: 'https://bit.ly/4tgh1rh',
     defaultModel: 'MiniMax-M2.7',
     models: [
       {
@@ -59,7 +61,7 @@ export const BUILTIN_PROVIDERS: Record<string, BuiltinProvider> = {
     id: 'alibaba',
     name: 'Alibaba (DashScope Coding Plan)',
     baseUrl: 'https://coding-intl.dashscope.aliyuncs.com/apps/anthropic',
-    signupUrl: 'https://bailian.console.alibabacloud.com/',
+    signupUrl: 'https://www.alibabacloud.com/en/campaign/ai-scene-coding',
     defaultModel: 'qwen3.6-plus',
     models: [
       {
@@ -111,10 +113,19 @@ export const BUILTIN_PROVIDERS: Record<string, BuiltinProvider> = {
   },
 };
 
+function mergeWithLocalAffiliate(id: string, cached: BuiltinProvider): BuiltinProvider {
+  const local = BUILTIN_PROVIDERS[id];
+  return {
+    ...cached,
+    affiliateUrl: cached.affiliateUrl ?? local?.affiliateUrl,
+    signupUrl: cached.signupUrl ?? local?.signupUrl,
+  };
+}
+
 export function getBuiltinProvider(id: string): BuiltinProvider | undefined {
   const cached = loadCachedRegistry();
   if (cached && cached.providers[id]) {
-    return cached.providers[id];
+    return mergeWithLocalAffiliate(id, cached.providers[id]);
   }
   return BUILTIN_PROVIDERS[id];
 }
@@ -124,7 +135,7 @@ export function getAllBuiltinProviders(): BuiltinProvider[] {
   if (cached) {
     const merged: Record<string, BuiltinProvider> = { ...BUILTIN_PROVIDERS };
     for (const [id, p] of Object.entries(cached.providers)) {
-      merged[id] = p;
+      merged[id] = mergeWithLocalAffiliate(id, p);
     }
     return Object.values(merged);
   }

@@ -30,12 +30,23 @@ npx whichcc -u
 
 | ID | Provider | Signup |
 |----|----------|--------|
-| `zai` | ZAI (Zhipu AI) | https://z.ai/pricing |
-| `kimi` | Kimi (Moonshot AI) | https://kimi.com/coding |
-| `minimax` | MiniMax | https://www.minimax.io/platform |
-| `alibaba` | Alibaba DashScope Coding Plan | https://bailian.console.alibabacloud.com/ |
+| `zai` | ZAI (Zhipu AI) | https://z.ai/subscribe |
+| `kimi` | Kimi (Moonshot AI) | https://kimi.com/code |
+| `minimax` | MiniMax | https://platform.minimax.io/subscribe/token-plan |
+| `alibaba` | Alibaba DashScope Coding Plan | https://www.alibabacloud.com/en/campaign/ai-scene-coding |
 
 Run `npx whichcc -l` to see all models.
+
+## 🎁 Referral / Affiliate Links
+
+**Full disclosure:** the links below are my personal referral codes. If you subscribe through them **you get a discount / signup bonus, and I get a small referral credit** at no extra cost to you. Using the plain signup URLs in the table above works exactly the same — use whichever you prefer.
+
+| Provider | Affiliate Link | What you get |
+|----------|----------------|--------------|
+| **ZAI — GLM Coding Plan** | [`bit.ly/4tJ4GLP`](https://bit.ly/4tJ4GLP) | Full Claude Code / Cline support, plans from $18/mo |
+| **MiniMax — Token Plan** | [`bit.ly/4tgh1rh`](https://bit.ly/4tgh1rh) | 10% off + API vouchers |
+
+These codes are **also embedded in the app** (shown with a `🎁` icon + `(affiliate)` tag whenever a provider has no API key). They're served from [`registry/models.json`](registry/models.json) so running `npx whichcc -u` pulls the latest links — if a code ever expires, the repo is the source of truth.
 
 ## Usage
 
@@ -169,6 +180,27 @@ pnpm test
 pnpm build
 node dist/index.js --help
 ```
+
+## 🔗 Also by @ersinkoc
+
+If `whichcc` saved you time, you might like these too:
+
+### 🏗️ [project-architect](https://github.com/ersinkoc/project-architect)
+> **An Agent Skill for documentation-first project planning.**
+> Transforms a project idea into implementation-ready blueprints and a single-shot coding agent prompt.
+
+Describe what you want to build → get a full spec, folder layout, and an agent-ready prompt. Ship the plan, not vibes.
+
+### 🛡️ [security-check](https://github.com/ersinkoc/security-check)
+> **Your AI becomes a Security Team. Every Language. Every Layer. Zero Tools.**
+
+```bash
+npx skills add ersinkoc/security-check
+```
+
+No scanners, no subscriptions — drop the skill into your agent and it audits your codebase for OWASP, auth, crypto, injection, secrets, and config issues end-to-end.
+
+---
 
 ## License
 

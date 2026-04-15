@@ -36,6 +36,8 @@ const BOOLEAN_FLAGS = new Set([
   '--clean',
   '--no-launch',
   '--dry-run',
+  '--show-template',
+  '--reset-template',
   '--version',
   '--help',
 ]);
@@ -59,12 +61,15 @@ export function parseArgs(argv: readonly string[]): ParsedArgs {
     clean: false,
     noLaunch: false,
     dryRun: false,
+    showTemplate: false,
+    resetTemplate: false,
     version: false,
     help: false,
   };
 
   for (let i = 0; i < argv.length; i++) {
     const rawArg = argv[i];
+    /* c8 ignore next -- defensive guard; for-loop bounds prevent undefined */
     if (rawArg === undefined) continue;
     let arg = rawArg;
     const alias = FLAG_ALIASES[arg];
@@ -132,6 +137,12 @@ function setBool(result: ParsedArgs, flag: string, value: boolean): void {
       break;
     case '--dry-run':
       result.dryRun = value;
+      break;
+    case '--show-template':
+      result.showTemplate = value;
+      break;
+    case '--reset-template':
+      result.resetTemplate = value;
       break;
     case '--version':
       result.version = value;

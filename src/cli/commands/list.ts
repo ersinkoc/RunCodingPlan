@@ -1,7 +1,7 @@
 import type { WhichCCConfig } from '../../types.js';
 import { resolveAllProviders, getBuiltinResolved, getCustomResolved } from '../../core/providers.js';
 import { hasKey } from '../../core/keys.js';
-import { c } from '../ui.js';
+import { c, footerPlug } from '../ui.js';
 
 export function listCommand(config: WhichCCConfig, onlyCustom = false): void {
   const all = onlyCustom ? getCustomResolved(config) : resolveAllProviders(config);
@@ -48,4 +48,6 @@ export function listCommand(config: WhichCCConfig, onlyCustom = false): void {
       console.log('');
     }
   }
+
+  console.log(footerPlug());
 }

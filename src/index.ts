@@ -14,6 +14,7 @@ import {
   setDefaultModelCommand,
 } from './cli/commands/configure.js';
 import { printHelp } from './cli/commands/help.js';
+import { showTemplateCommand, resetTemplateCommand } from './cli/commands/template.js';
 import { runInteractive } from './cli/commands/interactive-flow.js';
 import { VERSION } from './constants.js';
 import { error, restoreTerminal } from './cli/ui.js';
@@ -28,6 +29,7 @@ async function main(): Promise<void> {
     restoreTerminal();
     process.exit(143);
   });
+  /* c8 ignore next 3 -- process 'exit' fires after test completion; not reliably coverable */
   process.on('exit', () => {
     restoreTerminal();
   });
@@ -73,6 +75,14 @@ async function main(): Promise<void> {
   }
   if (args.clean) {
     await cleanCommand(false);
+    return;
+  }
+  if (args.showTemplate) {
+    showTemplateCommand();
+    return;
+  }
+  if (args.resetTemplate) {
+    resetTemplateCommand();
     return;
   }
   if (args.addCustom) {

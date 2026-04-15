@@ -1,12 +1,8 @@
 import { writeFileSync, existsSync, mkdirSync, readdirSync, statSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import type { SessionSettings } from '../types.js';
-import {
-  CLAUDE_DIR,
-  DEFAULT_TIMEOUT_MS,
-  SESSION_PREFIX,
-  SESSION_MAX_AGE_MS,
-} from '../constants.js';
+import { CLAUDE_DIR, SESSION_PREFIX, SESSION_MAX_AGE_MS } from '../constants.js';
+import { loadTemplate, applyTemplate } from './template.js';
 
 export interface BuildOptions {
   statusLine: boolean;
@@ -19,28 +15,15 @@ export function buildSessionSettings(
   model: string,
   options: BuildOptions,
 ): SessionSettings {
-  const settings: SessionSettings = {
-    env: {
-      ANTHROPIC_AUTH_TOKEN: apiKey,
-      ANTHROPIC_BASE_URL: baseUrl,
-      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: 1,
-      API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
-      ANTHROPIC_MODEL: model,
-      ANTHROPIC_SMALL_FAST_MODEL: model,
-      ANTHROPIC_DEFAULT_HAIKU_MODEL: model,
-      ANTHROPIC_DEFAULT_SONNET_MODEL: model,
-      ANTHROPIC_DEFAULT_OPUS_MODEL: model,
-      CLAUDE_CODE_NO_FLICKER: '1',
-    },
-  };
-  if (options.statusLine) {
-    settings.statusLine = {
-      type: 'command',
-      command: options.statusLineCommand,
-      padding: 0,
-    };
-  }
-  return settings;
+  const template = loadTemplate();
+  const rendered = applyTemplate(template, {
+    providerUrl: baseUrl,
+    apiKey,
+    model,
+    statusLineCommand: options.statusLineCommand,
+    includeStatusLine: options.statusLine,
+  });
+  return rendered as SessionSettings;
 }
 
 export function writeSessionFile(providerId: string, settings: SessionSettings): string {
@@ -85,4 +68,16 @@ export function listSessionFiles(): string[] {
   } catch {
     return [];
   }
+}
+
+export function removeSessionFile(path: string): boolean {
+  try {
+    if (existsSync(path)) {
+      unlinkSync(path);
+      return true;
+    }
+  } catch {
+    // ignore — best-effort cleanup
+  }
+  return false;
 }

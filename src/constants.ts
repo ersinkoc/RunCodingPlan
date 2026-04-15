@@ -3,11 +3,15 @@ import { homedir } from 'node:os';
 
 export const VERSION = '1.0.0';
 
-export const CLAUDE_DIR = join(homedir(), '.claude');
+const HOME_OVERRIDE = process.env['WHICHCC_HOME_DIR'];
+export const CLAUDE_DIR = HOME_OVERRIDE
+  ? join(HOME_OVERRIDE, '.claude')
+  : join(homedir(), '.claude');
 export const WHICHCC_DIR = join(CLAUDE_DIR, '.whichcc');
 export const CONFIG_PATH = join(WHICHCC_DIR, 'config.json');
 export const KEYS_PATH = join(WHICHCC_DIR, 'keys.json');
 export const REGISTRY_CACHE_PATH = join(WHICHCC_DIR, 'registry.json');
+export const TEMPLATE_PATH = join(WHICHCC_DIR, 'template.json');
 export const SESSION_PREFIX = 'whichcc-';
 
 export const REGISTRY_URL =

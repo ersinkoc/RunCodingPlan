@@ -31,6 +31,7 @@ export interface ResolvedProvider {
   readonly name: string;
   readonly baseUrl: string;
   readonly signupUrl?: string;
+  readonly affiliateUrl?: string;
   readonly defaultModel: string;
   readonly models: readonly string[];
   readonly userModels: readonly string[];
@@ -71,18 +72,7 @@ export interface ModelRegistry {
   readonly providers: Record<string, BuiltinProvider>;
 }
 
-export interface SessionEnv {
-  ANTHROPIC_AUTH_TOKEN: string;
-  ANTHROPIC_BASE_URL: string;
-  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: number;
-  API_TIMEOUT_MS: string;
-  ANTHROPIC_MODEL: string;
-  ANTHROPIC_SMALL_FAST_MODEL: string;
-  ANTHROPIC_DEFAULT_HAIKU_MODEL: string;
-  ANTHROPIC_DEFAULT_SONNET_MODEL: string;
-  ANTHROPIC_DEFAULT_OPUS_MODEL: string;
-  CLAUDE_CODE_NO_FLICKER: string;
-}
+export type SessionEnv = Record<string, string | number>;
 
 export interface StatusLineConfig {
   type: 'command';
@@ -93,6 +83,7 @@ export interface StatusLineConfig {
 export interface SessionSettings {
   env: SessionEnv;
   statusLine?: StatusLineConfig;
+  [key: string]: unknown;
 }
 
 export interface ParsedArgs {
@@ -116,6 +107,8 @@ export interface ParsedArgs {
   clean: boolean;
   noLaunch: boolean;
   dryRun: boolean;
+  showTemplate: boolean;
+  resetTemplate: boolean;
   version: boolean;
   help: boolean;
 }
