@@ -211,6 +211,10 @@ describe('resolveClaudeBinary', () => {
   });
 
   it('tries next name when first where/which lookup fails', async () => {
+    vi.doMock('node:os', async () => {
+      const actual = await vi.importActual<typeof import('node:os')>('node:os');
+      return { ...actual, platform: () => 'win32' };
+    });
     let callCount = 0;
     vi.doMock('node:fs', async () => {
       const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
